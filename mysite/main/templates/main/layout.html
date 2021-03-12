@@ -35,68 +35,11 @@
   </head>
 
   <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-      <div class="container">
-        <a class="navbar-brand" href="/">App Name</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarResponsive"
-          aria-controls="navbarResponsive"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/"
-                >Home
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Register</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Login</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <!-- Navbar -->
+    {% include "includes/_navbar.html" %}
+    <!-- Messages -->
+    {% include "includes/_messages.html" %}
 
-    {% if messages %}
-        {% for message in messages%}
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-                <div class="alert alert-primary alert-dismissable" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span></button>
-                    {{ message }}
-                </div>
-            {% endif %}
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                <div class="alert alert-success alert-dismissable" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span></button>
-                    {{ message }}
-                </div>
-            {% endif %}
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
-                <div class="alert alert-warning alert-dismissable" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span></button>
-                    {{ message }}
-                </div>
-            {% endif %}
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                <div class="alert alert-danger alert-dismissable" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span></button>
-                    {{ message }}
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
     <!-- Page Content -->
     <div class="container">
       <br />
