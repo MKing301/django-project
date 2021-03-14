@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-from .forms import NewUserForm
+from .forms import NewUserForm, UserChangeForm, EditProfileForm
 
 # Create your views here.
 def home(request):
@@ -46,6 +46,11 @@ def login_request(request):
 
     form = AuthenticationForm()
     return render(request=request, template_name="main/login.html", context={"form":form})
+
+
+def view_profile(request):
+    args = {'user': request.user}
+    return render(request=request, template_name='main/profile.html', context=args)
 
 
 def logout_request(request):
