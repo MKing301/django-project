@@ -53,6 +53,21 @@ def view_profile(request):
     return render(request=request, template_name='main/profile.html', context=args)
 
 
+def edit_profile(request):
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Your profile was updated successfully.")
+            return redirect('main:view_profile')
+
+    else:
+        form = EditProfileForm(instance=request.user)
+        args = {'form': form}
+        return render(request=request, template_name="main/edit_profile.html", context=args)
+
+
 def logout_request(request):
     logout(request)
     messages.success(request, "Logged out successfully!")
