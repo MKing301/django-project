@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib import messages
 from .forms import NewUserForm, UserChangeForm, EditProfileForm
 
@@ -67,6 +67,25 @@ def edit_profile(request):
         args = {'form': form}
         return render(request=request, template_name="main/edit_profile.html", context=args)
 
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            messages.success(request, f"Your profile was updated successfully.")
+            return redirect('main:view_profile')
+
+        else:
+            messages.danger(request, f"Please retry with valid data.")
+            return redirect('main:change_password')
+
+    else:
+        form = PasswordChangeForm(user=request.user)
+        args = {'form': form}
+        return render(request=request, template_name="main/change_password.html", context=args)
 
 def logout_request(request):
     logout(request)
