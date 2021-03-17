@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,6 +27,15 @@ SECRET_KEY = 'oud*&_vv7#1qv3u340s59-g_)2*s125ke3os_k5(^i2i)@gl0y'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+# File backend
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('MAIL_USERNAME')
+EMAIL_HOST_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
 
 # Application definition
@@ -55,7 +65,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
