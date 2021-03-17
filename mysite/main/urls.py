@@ -15,6 +15,13 @@ Including another URLconf
 """
 from django.urls import path, include
 from . import views
+from django.contrib.auth.views import (
+    PasswordChangeView,
+    PasswordChangeDoneView,
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView)
 
 app_name = "main"
 
@@ -23,7 +30,33 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path("profile/", views.view_profile, name="view_profile"),
     path("profile/edit/", views.edit_profile, name="edit_profile"),
-    path("logout/", views.logout_request, name="logout"),
-    path("login/", views.login_request, name="login"),
-    path("change-password/", views.change_password, name="change_password"),
+    path("accounts/logout/", views.logout_request, name="logout"),
+    path("accounts/login/", views.login_request, name="login"),
+    path(
+        "accounts/password_change/",
+        PasswordChangeView.as_view(),
+        name="password_change"),
+    path(
+        "accounts/password_change/done",
+        PasswordChangeDoneView.as_view(),
+        name="password_change_done"),
+    path("profile/password/",
+         PasswordChangeView.as_view(),
+         name="password_change"),
+    path(
+        "accounts/password_reset/",
+        PasswordResetView.as_view(),
+        name='password_reset'),
+    path(
+        "accounts/password_reset/done/",
+        PasswordResetDoneView.as_view(),
+        name='password_reset_done'),
+    path(
+        "accounts/reset/<uidb64>/<token>/",
+        PasswordResetConfirmView.as_view(),
+        name='password_reset_confirm'),
+    path(
+        "accounts/reset/done/",
+        PasswordResetCompleteView.as_view(),
+        name='password_reset_complete'),
 ]
