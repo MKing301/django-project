@@ -1,11 +1,17 @@
 {% extends 'main/layout.html' %}
 
 {% block content %}
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-sm btn-primary" type="submit">Login</button>
-    </form>
-
-    If you do not have an account, <a href="/register"><strong>register</strong></a> now.
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-sm btn-primary" type="submit">Login</button>
+        </form>
+    </div>
+    <div>
+        If you do not have an account, <a href="/register"><strong>register</strong></a> now.
+    </div>
+    <div>
+        If you do forgot your password, <a href="/accounts/password_reset/"><strong>reset</strong></a> now.
+    </div>
 {% endblock %}
