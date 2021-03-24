@@ -1,10 +1,10 @@
 {% extends 'main/layout.html' %}
-
 {% block content %}
     <div>
         <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
+            <p>Username: {{ form.username }}</p>
+            <p>Password: {{ form.password }}</p>
             <button class="btn btn-sm btn-primary" type="submit">Login</button>
         </form>
     </div>
