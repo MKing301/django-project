@@ -8,6 +8,8 @@
             <small>Posted at {{ post.inserted_date }}</small>
 
             <p>{{ post.intro}}</p>
+
+            <a href="{% url 'blog:post_detail' post.slug %}">Read more</a>
         <div>
     {% endfor %}
 {% endblock %}
