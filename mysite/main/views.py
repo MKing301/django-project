@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib import messages
 from .forms import NewUserForm, UserChangeForm, EditProfileForm
 
 # Create your views here.
-def home(request):
-    return render(request=request, template_name="main/home.html")
+def index(request):
+    return render(request=request, template_name="main/index.html")
 
 
 def register(request):
@@ -18,13 +18,13 @@ def register(request):
             messages.success(request, f"New account created: {username}")
             login(request, user)
             messages.success(request, f"You are now logged in as {username}")
-            return redirect("main:home")
+            return redirect("main:index")
         else:
             for msg in form.error_messages:
                 messages.error(request, f"{msg}: {form.error_messages[msg]}")
 
     form = NewUserForm
-    return render(request=request, template_name="main/register.html", context={"form": form})
+    return render(request=request, template_name="registration/register.html", context={"form": form})
 
 
 def login_request(request):
@@ -36,8 +36,7 @@ def login_request(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, f"You are now logged in as {username}")
-                return redirect("main:home")
+                return redirect("main:index")
             else:
                 messages.error(request, "Invalid username and/or password!")
 
@@ -45,7 +44,7 @@ def login_request(request):
             messages.error(request, "Invalid username and/or password!")
 
     form = AuthenticationForm()
-    return render(request=request, template_name="main/login.html", context={"form":form})
+    return render(request=request, template_name="registration/login.html", context={"form":form})
 
 
 def view_profile(request):
@@ -70,5 +69,4 @@ def edit_profile(request):
 
 def logout_request(request):
     logout(request)
-    messages.success(request, "Logged out successfully!")
-    return redirect("main:home")
+    return redirect("main:index")
