@@ -16,6 +16,8 @@ Including another URLconf
 from django.urls import path, include
 from . import views
 from django.contrib.auth.views import (
+    LoginView,
+    LogoutView,
     PasswordChangeView,
     PasswordChangeDoneView,
     PasswordResetView,
@@ -26,30 +28,27 @@ from django.contrib.auth.views import (
 app_name = "main"
 
 urlpatterns = [
-    path("", views.home, name="home"),
+    path("", views.index, name="index"),
+    path("accounts/logout/", LogoutView.as_view(), name="logout"),
+    path("accounts/login/", LoginView.as_view(), name="login"),
     path("register/", views.register, name="register"),
     path("profile/", views.view_profile, name="view_profile"),
     path("profile/edit/", views.edit_profile, name="edit_profile"),
-    path("accounts/logout/", views.logout_request, name="logout"),
-    path("accounts/login/", views.login_request, name="login"),
     path(
         "accounts/password_change/",
-        PasswordChangeView.as_view(),
+        PasswordChangeView.as_view(template_name='accounts/password_change.html'),
         name="password_change"),
     path(
         "accounts/password_change/done",
-        PasswordChangeDoneView.as_view(),
+        PasswordChangeDoneView.as_view(template_name='accounts/password_change_done.html'),
         name="password_change_done"),
-    path("profile/password/",
-         PasswordChangeView.as_view(),
-         name="password_change"),
     path(
         "accounts/password_reset/",
-        PasswordResetView.as_view(),
+        PasswordResetView.as_view(template_name='accounts/password_reset.html'),
         name='password_reset'),
     path(
         "accounts/password_reset/done/",
-        PasswordResetDoneView.as_view(),
+        PasswordResetDoneView.as_view(template_name='accounts/password_reset_done.html'),
         name='password_reset_done'),
     path(
         "accounts/reset/<uidb64>/<token>/",
@@ -57,6 +56,6 @@ urlpatterns = [
         name='password_reset_confirm'),
     path(
         "accounts/reset/done/",
-        PasswordResetCompleteView.as_view(),
+        PasswordResetCompleteView.as_view(template_name='accounts/password_reset_complete.html'),
         name='password_reset_complete'),
 ]
