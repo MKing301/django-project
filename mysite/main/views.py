@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
+from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import NewUserForm, UserChangeForm, EditProfileForm
 
@@ -15,9 +17,10 @@ def register(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password1")
+            user = authenticate(username=username, password=password)
             messages.success(request, f"New account created: {username}")
             login(request, user)
-            messages.success(request, f"You are now logged in as {username}")
             return redirect("main:index")
         else:
             for msg in form.error_messages:
@@ -65,6 +68,22 @@ def edit_profile(request):
         form = EditProfileForm(instance=request.user)
         args = {'form': form}
         return render(request=request, template_name="main/edit_profile.html", context=args)
+
+
+def password_change_request(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            messages.success(request, f"Your password was updated successfully.")
+            return redirect('/profile')
+
+    else:
+        form = PasswordChangeForm(user=request.user)
+        args = {'form': form}
+        return render(request=request, template_name="accounts/password_change.html", context=args)
 
 
 def logout_request(request):

@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path, include
+from django.urls import path, include, reverse_lazy
 from . import views
 from django.contrib.auth.views import (
     LoginView,
@@ -35,13 +35,14 @@ urlpatterns = [
     path("profile/", views.view_profile, name="view_profile"),
     path("profile/edit/", views.edit_profile, name="edit_profile"),
     path(
-        "accounts/password_change/",
+        "profile/password/",
         PasswordChangeView.as_view(template_name='accounts/password_change.html'),
-        name="password_change"),
+        name="password_change_request"),
     path(
-        "accounts/password_change/done",
-        PasswordChangeDoneView.as_view(template_name='accounts/password_change_done.html'),
-        name="password_change_done"),
+        "accounts/password_change/",
+        PasswordChangeView.as_view(template_name='accounts/password_change.html',
+        success_url = '/profile'),
+        name="password_change_request"),
     path(
         "accounts/password_reset/",
         PasswordResetView.as_view(template_name='accounts/password_reset.html'),
