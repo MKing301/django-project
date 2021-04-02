@@ -35,3 +35,17 @@
         </div>
     {% endfor %}
 {% endif %}
+
+{% for oldpass_err in form.old_password.errors %}
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span></button>
+        {{ oldpass_err }}
+    </div>
+{% endfor %}
+
+{% for newpass_err in form.new_password2.errors %}
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span></button>
+        {{ newpass_err }}
+    </div>
+{% endfor %}
