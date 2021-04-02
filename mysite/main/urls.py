@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.urls import path, include, reverse_lazy
 from . import views
+from .views import CustomPasswordChangeView
 from django.contrib.auth.views import (
     LoginView,
     LogoutView,
@@ -36,11 +37,11 @@ urlpatterns = [
     path("profile/edit/", views.edit_profile, name="edit_profile"),
     path(
         "profile/password/",
-        PasswordChangeView.as_view(template_name='accounts/password_change.html'),
+        CustomPasswordChangeView.as_view(template_name='accounts/password_change.html'),
         name="password_change_request"),
     path(
         "accounts/password_change/",
-        PasswordChangeView.as_view(template_name='accounts/password_change.html',
+        CustomPasswordChangeView.as_view(template_name='accounts/password_change.html',
         success_url = '/profile'),
         name="password_change_request"),
     path(
