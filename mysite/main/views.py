@@ -2,9 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
-from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import NewUserForm, UserChangeForm, EditProfileForm
+
+
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'accounts/password_change.html'
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Your password has been changed successfully.')
+        return super().form_valid(form)
+
 
 # Create your views here.
 def index(request):
@@ -28,26 +36,6 @@ def register(request):
 
     form = NewUserForm
     return render(request=request, template_name="registration/register.html", context={"form": form})
-
-
-def login_request(request):
-    if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect("main:index")
-            else:
-                messages.error(request, "Invalid username and/or password!")
-
-        else:
-            messages.error(request, "Invalid username and/or password!")
-
-    form = AuthenticationForm()
-    return render(request=request, template_name="registration/login.html", context={"form":form})
 
 
 def view_profile(request):
