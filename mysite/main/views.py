@@ -20,6 +20,30 @@ def index(request):
     return render(request=request, template_name="main/index.html")
 
 
+def login_request(request):
+    if not request.user.is_authenticated:
+        if request.method == "POST":
+            form = AuthenticationForm(request, data=request.POST)
+            if form.is_valid():
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password')
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect("main:index")
+                else:
+                    messages.error(request, "Invalid username and/or password!")
+
+            else:
+                messages.error(request, "Invalid username and/or password!")
+
+        form = AuthenticationForm()
+        return render(request=request, template_name="registration/login.html", context={"form":form})
+    else:
+        messages.info(request, "You are already logged in.  You must log out to log in as another user.")
+        return redirect("main:index")
+
+
 def register(request):
     if not request.user.is_authenticated:
         if request.method == "POST":
