@@ -21,22 +21,26 @@ def index(request):
 
 
 def register(request):
-    if request.method == "POST":
-        form = NewUserForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password1")
-            user = authenticate(username=username, password=password)
-            messages.success(request, f"New account created: {username}")
-            login(request, user)
-            return redirect("main:index")
-        else:
-            for msg in form.error_messages:
-                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    if not request.user.is_authenticated:
+        if request.method == "POST":
+            form = NewUserForm(request.POST)
+            if form.is_valid():
+                user = form.save()
+                username = form.cleaned_data.get("username")
+                password = form.cleaned_data.get("password1")
+                user = authenticate(username=username, password=password)
+                messages.success(request, f"New account created: {username}")
+                login(request, user)
+                return redirect("main:index")
+            else:
+                for msg in form.error_messages:
+                    messages.error(request, f"{msg}: {form.error_messages[msg]}")
 
-    form = NewUserForm
-    return render(request=request, template_name="registration/register.html", context={"form": form})
+        form = NewUserForm
+        return render(request=request, template_name="registration/register.html", context={"form": form})
+    else:
+        messages.info(request, "You are already registered.  You must log out to register another user.")
+        return redirect("main:index")
 
 
 @login_required
