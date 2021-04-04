@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import NewUserForm, UserChangeForm, EditProfileForm
 
@@ -38,11 +39,13 @@ def register(request):
     return render(request=request, template_name="registration/register.html", context={"form": form})
 
 
+@login_required
 def view_profile(request):
     args = {'user': request.user}
     return render(request=request, template_name='main/profile.html', context=args)
 
 
+@login_required
 def edit_profile(request):
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=request.user)
@@ -58,6 +61,7 @@ def edit_profile(request):
         return render(request=request, template_name="main/edit_profile.html", context=args)
 
 
+@login_required
 def password_change_request(request):
     if request.method == 'POST':
         form = PasswordChangeForm(data=request.POST, user=request.user)
@@ -74,6 +78,7 @@ def password_change_request(request):
         return render(request=request, template_name="accounts/password_change.html", context=args)
 
 
+@login_required
 def logout_request(request):
     logout(request)
     return redirect("main:index")
