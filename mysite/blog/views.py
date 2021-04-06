@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import CommentForm
-from .models import Post
+from .models import Post, User
 
 # Create your views here.
 @login_required
@@ -22,6 +22,7 @@ def post_detail(request, slug):
 
         if form.is_valid():
             comment = form.save(commit=False)
+            form.instance.name = request.user
             comment.post = post
             comment.save()
 
