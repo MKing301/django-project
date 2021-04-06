@@ -1,4 +1,5 @@
 {% extends 'blog/layout.html' %}
+{% load widget_tweaks %}
 {% block title %} Blog Details {% endblock %}
 {% block content %}
     <h1 class="title">{{ post.title }}</h1>
@@ -18,7 +19,7 @@
             <div class="media-content">
                 <div class="content">
                     <p>
-                        <strong>{{ comment.name }}</strong><small>{{ comment.comment_inserted_date }}</small>
+                        <strong>{{ comment.name }}   </strong><small>{{ comment.comment_inserted_date }}</small>
                         <br>
                         {{ comment.body }}
                     </p>
@@ -35,12 +36,15 @@
 
     <h2 class="subtitle">Add comment</h2>
 
-    <form method="POST" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-
-    <div class="field">
-        <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+    <div class="form-group">
+        <form method="POST" action="">
+        {% csrf_token %}
+            <div class="form-group">
+                {% render_field form.body class="form-control" placeholder="Enter comment here" %}
+            </div>
+            <div class="field">
+                <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+            </div>
+        </form>
     </div>
-    </form>
 {% endblock %}
