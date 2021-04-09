@@ -52,9 +52,7 @@ def register(request):
                 user = form.save()
                 username = form.cleaned_data.get("username")
                 password = form.cleaned_data.get("password1")
-                user = authenticate(username=username, password=password)
                 messages.success(request, f"New account created: {username}")
-                login(request, user)
                 return redirect("main:index")
             else:
                 for msg in form.error_messages:
