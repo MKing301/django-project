@@ -1,3 +1,5 @@
+import os
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
@@ -5,6 +7,7 @@ from django.contrib.auth import login, logout, authenticate, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import NewUserForm, UserChangeForm, EditProfileForm
+from django.core.mail import send_mail
 
 
 class CustomPasswordChangeView(PasswordChangeView):
@@ -61,6 +64,15 @@ def register(request):
                 username = form.cleaned_data.get("username")
                 password = form.cleaned_data.get("password1")
                 messages.success(request, f"New account created: {username}")
+                messages.info(request, f"An email is being sent to the Admin to activate your account.")
+
+                send_mail(
+                    'New User Registered',
+                    f'New user {username} just registered!  You will need to set this user to active status.',
+                    os.environ.get('MAIL_USERNAME'),
+                    ['mking301@att.net'],
+                    fail_silently=False,
+                )
                 return redirect("main:index")
             else:
                 for msg in form.error_messages:
