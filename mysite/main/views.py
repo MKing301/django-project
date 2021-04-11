@@ -29,16 +29,24 @@ def login_request(request):
                 password = form.cleaned_data.get('password')
                 user = authenticate(username=username, password=password)
                 if user is not None:
-                    login(request, user)
-                    return redirect("main:index")
+                    if user.is_active == True:
+                        login(request, user)
+                        return redirect("main:index")
+                    else:
+                        messages.error(request, "Please contact Administrator!")
+                        return redirect("main:index")
+
                 else:
                     messages.error(request, "Invalid username and/or password!")
+                    return redirect("main:index")
 
             else:
                 messages.error(request, "Invalid username and/or password!")
+                return redirect("main:index")
 
-        form = AuthenticationForm()
-        return render(request=request, template_name="registration/login.html", context={"form":form})
+        else:
+            form = AuthenticationForm()
+            return render(request=request, template_name="registration/login.html", context={"form":form})
     else:
         messages.info(request, "You are already logged in.  You must log out to log in as another user.")
         return redirect("main:index")
