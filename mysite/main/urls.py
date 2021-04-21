@@ -60,4 +60,5 @@ urlpatterns = [
         "accounts/reset/done/",
         PasswordResetCompleteView.as_view(template_name='accounts/password_reset_complete.html'),
         name='password_reset_complete'),
+    path("contact/", views.contact, name='contact'),
 ]
