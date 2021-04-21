@@ -1,0 +1,15 @@
+{% extends 'main/layout.html' %}
+{% block title %} Contact {% endblock %}
+{% block content %}
+    <h3>Contact Form</h3>
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            <p>Full Name: {{ form.fullname }}</p>
+            <p>Email: {{ form.contact_email }}</p>
+            <p>Subject: {{ form.contact_subject }}</p>
+            <p>Message: {{ form.contact_message }}</p>
+            <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+        </form>
+    </div>
+{% endblock %}
