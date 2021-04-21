@@ -6,7 +6,7 @@ from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import NewUserForm, UserChangeForm, EditProfileForm
+from .forms import NewUserForm, UserChangeForm, EditProfileForm, ContactForm
 from django.core.mail import send_mail
 
 
@@ -83,6 +83,32 @@ def register(request):
     else:
         messages.info(request, "You are already registered.  You must log out to register another user.")
         return redirect("main:index")
+
+
+def contact(request):
+    if request.method == "POST":
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            fullname = form.cleaned_data.get("fullname")
+            contact_email = form.cleaned_data.get("contact_email")
+            contact_subject = form.cleaned_data.get("contact_subject")
+            contact_message = form.cleaned_data.get("contact_message")
+            messages.info(request, f"Thank you for contacting us.")
+
+            send_mail(
+                f'{contact_subject}',
+                f'{fullname} {contact_email} {contact_message}',
+                os.environ.get('MAIL_USERNAME'),
+                ['mking301@att.net'],
+                fail_silently=False,
+            )
+            return redirect("main:index")
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+
+    form = ContactForm
+    return render(request=request, template_name="main/contact.html", context={"form": form})
 
 
 @login_required
