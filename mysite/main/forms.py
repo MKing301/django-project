@@ -34,3 +34,10 @@ class EditProfileForm(UserChangeForm):
         if commit:
             user.save()
             return user
+
+
+class ContactForm(forms.Form):
+    fullname = forms.CharField(max_length=200)
+    contact_email = forms.EmailField()
+    contact_subject = forms.CharField(max_length=200)
+    contact_message = forms.CharField(widget=forms.Textarea)
