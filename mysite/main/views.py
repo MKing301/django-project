@@ -1,5 +1,3 @@
-import os
-
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
@@ -7,7 +5,7 @@ from django.contrib.auth import login, logout, authenticate, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import NewUserForm, UserChangeForm, EditProfileForm, ContactForm
-from django.core.mail import send_mail
+from .helpers import email_admin
 
 
 class CustomPasswordChangeView(PasswordChangeView):
@@ -61,18 +59,29 @@ def register(request):
             form = NewUserForm(request.POST)
             if form.is_valid():
                 user = form.save()
+                first_name = form.cleaned_data.get("first_name")
+                last_name = form.cleaned_data.get("last_name")
                 username = form.cleaned_data.get("username")
+                email = form.cleaned_data.get("email")
                 password = form.cleaned_data.get("password1")
                 messages.success(request, f"New account created: {username}")
-                messages.info(request, f"An email is being sent to the Admin to activate your account.")
 
-                send_mail(
+                email_admin(
                     'New User Registered',
-                    f'New user {username} just registered!  You will need to set this user to active status.',
-                    os.environ.get('MAIL_USERNAME'),
-                    ['mking301@att.net'],
-                    fail_silently=False,
+                    f'''
+                    <p>Greetings!</p>
+                    <p>The following user registered:</p>
+                    <ul>
+                    <li><strong>First Name:</strong> {first_name}</li>
+                    <li><strong>Last Name:</strong> {last_name}</li>
+                    <li><strong>Username:</strong> {username}</li>
+                    <li><strong>Email:</strong> {email}</li>
+                    </ul>
+                    <p>Be sure to activate their account!</p>
+                    '''
                 )
+
+                messages.info(request, f"An email is being sent to the Admin to activate your account.")
                 return redirect("main:index")
             else:
                 for msg in form.error_messages:
@@ -93,15 +102,16 @@ def contact(request):
             contact_email = form.cleaned_data.get("contact_email")
             contact_subject = form.cleaned_data.get("contact_subject")
             contact_message = form.cleaned_data.get("contact_message")
-            messages.info(request, f"Thank you for contacting us.")
 
-            send_mail(
-                f'{contact_subject}',
-                f'{fullname} {contact_email} {contact_message}',
-                os.environ.get('MAIL_USERNAME'),
-                ['mking301@att.net'],
-                fail_silently=False,
+            email_admin(
+                contact_subject,
+                f'''
+                <p>Message from <strong>{fullname}</strong> [{contact_email}]</p>
+                <p>{contact_message}</p>
+                '''
             )
+
+            messages.success(request, f"Email sent!  Thank you for contacting us.")
             return redirect("main:index")
         else:
             for msg in form.error_messages:
