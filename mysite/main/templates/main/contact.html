@@ -10,6 +10,8 @@
             <p>Subject: {{ form.contact_subject }}</p>
             <p>Message: {{ form.contact_message }}</p>
             <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+            <script src='https://www.google.com/recaptcha/api.js'></script>
+            <div class="g-recaptcha" data-sitekey={{sitekey}}></div>
         </form>
     </div>
 {% endblock %}

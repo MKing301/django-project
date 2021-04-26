@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'oud*&_vv7#1qv3u340s59-g_)2*s125ke3os_k5(^i2i)@gl0y'
+SECRET_KEY = os.environ.get('SECRET_KEY_LOCAL')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.90']
 
 # File backend
 # EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
@@ -92,9 +92,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydb',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'NAME': 'mydb', # User env var for production
+        'USER': 'postgres', # User env var for production
+        'PASSWORD': 'postgres', # User env var for production
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -141,3 +141,7 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+
+GOOGLE_RECAPTCHA_SITE_KEY = os.environ.get('GOOGLE_RECAPTCHA_SITE_KEY')
+GOOGLE_RECAPTCHA_SECRET_KEY = os.environ.get('GOOGLE_RECAPTCHA_SECRET_KEY')

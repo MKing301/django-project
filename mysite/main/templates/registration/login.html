@@ -7,6 +7,8 @@
             {% csrf_token %}
             <p>Username: {{ form.username }}</p>
             <p>Password: {{ form.password }}</p>
+            <script src='https://www.google.com/recaptcha/api.js'></script>
+            <div class="g-recaptcha" data-sitekey="6LcrZ7gaAAAAAPNCJLNeSp7-fDmDByQqaTpgoxbb"></div>
             <button class="btn btn-sm btn-primary" type="submit">Login</button>
         </form>
     </div>

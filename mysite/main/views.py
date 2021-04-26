@@ -29,17 +29,8 @@ def login_request(request):
                 username = form.cleaned_data.get('username')
                 password = form.cleaned_data.get('password')
                 user = authenticate(username=username, password=password)
-                if user is not None:
-                    if user.is_active == True:
-                        login(request, user)
-                        return redirect("main:index")
-                    else:
-                        messages.error(request, "Please contact Administrator!")
-                        return redirect("main:index")
-
-                else:
-                    messages.error(request, "Invalid username and/or password!")
-                    return redirect("main:index")
+                login(request, user)
+                return redirect("main:index")
 
             else:
                 messages.error(request, "Invalid username and/or password!")
@@ -47,7 +38,7 @@ def login_request(request):
 
         else:
             form = AuthenticationForm()
-            return render(request=request, template_name="registration/login.html", context={"form":form})
+            return render(request=request, template_name="registration/login.html", context={"form":form, "sitekey":"6LcrZ7gaAAAAAPNCJLNeSp7-fDmDByQqaTpgoxbb"})
     else:
         messages.info(request, "You are already logged in.  You must log out to log in as another user.")
         return redirect("main:index")
@@ -88,7 +79,7 @@ def register(request):
                     messages.error(request, f"{msg}: {form.error_messages[msg]}")
 
         form = NewUserForm
-        return render(request=request, template_name="registration/register.html", context={"form": form})
+        return render(request=request, template_name="registration/register.html", context={"form": form, "sitekey":"6LcrZ7gaAAAAAPNCJLNeSp7-fDmDByQqaTpgoxbb"})
     else:
         messages.info(request, "You are already registered.  You must log out to register another user.")
         return redirect("main:index")
@@ -118,7 +109,7 @@ def contact(request):
                 messages.error(request, f"{msg}: {form.error_messages[msg]}")
 
     form = ContactForm
-    return render(request=request, template_name="main/contact.html", context={"form": form})
+    return render(request=request, template_name="main/contact.html", context={"form": form, "sitekey":"6LcrZ7gaAAAAAPNCJLNeSp7-fDmDByQqaTpgoxbb"})
 
 
 @login_required
