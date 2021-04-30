@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import NewUserForm, UserChangeForm, EditProfileForm, ContactForm
 from .helpers import email_admin
+from mysite.settings import GOOGLE_RECAPTCHA_SITE_KEY
 
 
 class CustomPasswordChangeView(PasswordChangeView):
@@ -38,7 +39,7 @@ def login_request(request):
 
         else:
             form = AuthenticationForm()
-            return render(request=request, template_name="registration/login.html", context={"form":form, "sitekey":"6LcrZ7gaAAAAAPNCJLNeSp7-fDmDByQqaTpgoxbb"})
+            return render(request=request, template_name="registration/login.html", context={"form":form, "sitekey": GOOGLE_RECAPTCHA_SITE_KEY})
     else:
         messages.info(request, "You are already logged in.  You must log out to log in as another user.")
         return redirect("main:index")
@@ -79,7 +80,7 @@ def register(request):
                     messages.error(request, f"{msg}: {form.error_messages[msg]}")
 
         form = NewUserForm
-        return render(request=request, template_name="registration/register.html", context={"form": form, "sitekey":"6LcrZ7gaAAAAAPNCJLNeSp7-fDmDByQqaTpgoxbb"})
+        return render(request=request, template_name="registration/register.html", context={"form": form, "sitekey": GOOGLE_RECAPTCHA_SITE_KEY})
     else:
         messages.info(request, "You are already registered.  You must log out to register another user.")
         return redirect("main:index")
@@ -105,11 +106,11 @@ def contact(request):
             messages.success(request, f"Email sent!  Thank you for contacting us.")
             return redirect("main:index")
         else:
-            for msg in form.error_messages:
-                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+            messages.error(request, "Invalid form submission!")
+            return render(request=request, template_name="main/contact.html", context={"form": form, "sitekey": GOOGLE_RECAPTCHA_SITE_KEY})
 
     form = ContactForm
-    return render(request=request, template_name="main/contact.html", context={"form": form, "sitekey":"6LcrZ7gaAAAAAPNCJLNeSp7-fDmDByQqaTpgoxbb"})
+    return render(request=request, template_name="main/contact.html", context={"form": form, "sitekey": GOOGLE_RECAPTCHA_SITE_KEY})
 
 
 @login_required
