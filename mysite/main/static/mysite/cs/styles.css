@@ -1,0 +1,12 @@
+label {
+    font-weight: bold;
+}
+
+.field_note {
+    color: blue;
+}
+
+legend {
+    font-weight: bold;
+    color: rgb(21, 10, 173);
+}
