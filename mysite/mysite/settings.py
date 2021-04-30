@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY_LOCAL')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.90']
+ALLOWED_HOSTS = ['192.168.1.77', '192.168.1.90']
 
 # File backend
 # EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
