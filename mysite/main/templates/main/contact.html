@@ -1,17 +1,36 @@
 {% extends 'main/layout.html' %}
 {% block title %} Contact {% endblock %}
 {% block content %}
-    <h3>Contact Form</h3>
+    <legend class="border-bottom mb-4">
+        Contact Us
+    </legend>
     <div>
         <form method="POST">
             {% csrf_token %}
-            <p>Full Name: {{ form.fullname }}</p>
-            <p>Email: {{ form.contact_email }}</p>
-            <p>Subject: {{ form.contact_subject }}</p>
-            <p>Message: {{ form.contact_message }}</p>
-            <button class="btn btn-sm btn-primary" type="submit">Submit</button>
-            <script src='https://www.google.com/recaptcha/api.js'></script>
-            <div class="g-recaptcha" data-sitekey={{sitekey}}></div>
+            <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" class="form-control" name="fullname" required=true>
+            <div>
+            <div class="form-group">
+                <label for="contact_email">Email</label>
+                <input type="text" class="form-control" name="contact_email" required=true>
+            </div>
+            <div class="form-group">
+                <label for="contact_subject">Subject</label>
+                <input type="text" class="form-control" name="contact_subject" required=true>
+            </div>
+            <div class="form-group">
+                <label for="contact_message">Message</label>
+                <textarea class="form-control" name="contact_message" row="3" required=true></textarea>
+            </div>
+            <div class="form-group">
+                <script src='https://www.google.com/recaptcha/api.js'></script>
+                <div class="g-recaptcha" data-sitekey="{{sitekey}}" required=true></div>
+            </div>
+            <br>
+            <div class="form-group">
+                <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+            </div>
         </form>
     </div>
 {% endblock %}
