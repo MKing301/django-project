@@ -4,80 +4,20 @@
 {% block content %}
   <div class="container">
     <div class="row">
-      <div class="col-md-6 col-lg-4">
-        <div class="card">
-          <img class="card-img-top" src="{% static 'mysite/images/typewriter-801921_640.png' %}" alt="typewriter">
-          <div class="card-body">
-            <h5 class="card-title">Autobiography</h5>
-            <p class="category-text">
-              This category contains all of the autobiography books we have in our library or plan to add to our library.
-            </p>
-            <a href="#" class="card-link">Autobiography Books</a>
+      {% for cat in categories %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card">
+            <img class="card-img-top" src="{% static cat.category_img_loc %}" alt="image missing"/>
+            <div class="card-body">
+              <h5 class="card-title">{{ cat.category }}</h5>
+              <p class="category-text">
+                {{ cat.category_summary }}
+              </p>
+              <a href="{{ cat.category_slug}}" class="card-link">{{ cat.category }}</a>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <div class="card">
-          <img class="card-img-top" src="{% static 'mysite/images/love-699480_640.png' %}" alt="bible">
-          <div class="card-body">
-            <h5 class="card-title">Biblical</h5>
-            <p class="category-text">
-              This category contains all of the books we have in our library or plan to add to our library pertaining to the bible.
-            </p>
-            <a href="#" class="card-link">Biblical Books</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <div class="card">
-          <img class="card-img-top" src="{% static 'mysite/images/programming-1873854_640.png' %}" alt="programming">
-          <div class="card-body">
-            <h5 class="card-title">Coding</h5>
-            <p class="category-text">
-              This category contains all of the books we have in our library or plan to add to our library pertaining to coding.
-            </p>
-            <a href="#" class="card-link">Coding Books</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 col-lg-4">
-        <div class="card">
-          <img class="card-img-top" src="{% static 'mysite/images/ingredients-498199_640.png' %}" alt="ingredients">
-          <div class="card-body">
-            <h5 class="card-title">Cooking</h5>
-            <p class="category-text">
-              This category contains all of the books we have in our library or plan to add to our library on cooking.
-            </p>
-            <a href="#" class="card-link">Cooking Books</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <div class="card">
-          <img class="card-img-top" src="{% static 'mysite/images/calculator-385506_640.png' %}" alt="finance">
-          <div class="card-body">
-            <h5 class="card-title">Financial</h5>
-            <p class="category-text">
-              This category contains all of the books we have in our library or plan to add to our library pertaining to finance.
-            </p>
-            <a href="#" class="card-link">Finance Books</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <div class="card">
-          <img class="card-img-top" src="{% static 'mysite/images/leader-2206099_640.png' %}" alt="leadership">
-          <div class="card-body">
-            <h5 class="card-title">Leadership</h5>
-            <p class="category-text">
-              This category contains all of the books we have in our  library or plan to add to our library pertaining to leadership.
-            </p>
-            <a href="#" class="card-link">Leadership Books</a>
-          </div>
-        </div>
-      </div>
+      {% endfor %}
     </div>
   </div>
 {% endblock %}
