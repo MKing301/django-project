@@ -6,9 +6,10 @@ class BookCategory(models.Model):
     category = models.CharField(max_length=200)
     category_summary = models.CharField(max_length=200)
     category_slug = models.CharField(max_length=200)
+    category_img_loc = models.FileField(upload_to='mysite/images')
 
     class Meta:
-        verbose_name_plural = "Categories"
+        verbose_name_plural = "BookCategories"
 
     def __str__(self):
         return self.category
