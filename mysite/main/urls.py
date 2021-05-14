@@ -61,4 +61,5 @@ urlpatterns = [
         PasswordResetCompleteView.as_view(template_name='accounts/password_reset_complete.html'),
         name='password_reset_complete'),
     path("contact/", views.contact, name='contact'),
+    path("<single_slug>", views.books, name="books"),
 ]
