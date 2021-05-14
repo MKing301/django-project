@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
@@ -11,18 +11,6 @@ from .helpers import email_admin
 from mysite.settings import GOOGLE_RECAPTCHA_SITE_KEY
 
 
-def single_slug(request, single_slug):
-    categories = [c.category_slug for c in BookCategory.object.all()]
-    if single_slug in categories:
-        return HttpResponse(f'{single_slug} is a category!!!')
-
-    books = [b.book_slug for b in Book.object.all()]
-    if single_slug in books:
-        return HttpResponse(f'{single_slug} is a category!!!')
-
-    return HttpResponse(f'{single_slug} does not correspond to anything!!!')
-
-
 class CustomPasswordChangeView(PasswordChangeView):
     template_name = 'accounts/password_change.html'
 
@@ -31,11 +19,17 @@ class CustomPasswordChangeView(PasswordChangeView):
         return super().form_valid(form)
 
 
-# Create your views here.
 def index(request):
     return render(request=request,
                   template_name="main/index.html",
                   context={"categories": BookCategory.objects.all})
+
+
+def books(request, single_slug):
+    book_cat = get_object_or_404(BookCategory, category_slug=single_slug)
+    return render(request=request,
+                template_name="main/books.html",
+                context={"books": Book.objects.all().filter(category=book_cat.id)})
 
 
 def login_request(request):
