@@ -1,0 +1,35 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block title %}Books{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <a href="{% url 'main:index' %}">Return to categories</a>
+    </div>
+    <br>
+    {% if books %}
+    <div class="row">
+        {% for book in books %}
+          <div class="col-md-6 col-lg-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ book.title }}</h5>
+                <p class="category-text">
+                  Author: {{ book.author }}<br>
+                  ISBN: {{ book.isbn }}<br>
+                  Published Date: {{ book.published_date }}
+                </p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="row">
+      <p>
+        <h1>There are no books for this category!</h1>
+      </p>
+    </div>
+    {% endif %}
+  </div>
+{% endblock %}
