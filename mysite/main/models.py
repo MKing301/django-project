@@ -19,7 +19,7 @@ class Book(models.Model):
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=200)
     isbn = models.CharField(max_length=200)
-    published_date = models.DateTimeField('date published')
+    published_date = models.DateField('date published')
     book_slug = models.CharField(max_length=200)
     category = models.ForeignKey(BookCategory, verbose_name="Category", on_delete=models.CASCADE)
 
