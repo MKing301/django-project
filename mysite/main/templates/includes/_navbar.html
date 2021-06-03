@@ -1,7 +1,7 @@
 <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
-        <a class="navbar-brand" href="/">Book Club</a>
+        <a class="navbar-brand" href="{% url 'main:index' %}">Book Club</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -16,33 +16,33 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="/"
+              <a class="nav-link" href="{% url 'main:index' %}"
                 >Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/contact"
+              <a class="nav-link" href="{% url 'main:contact' %}"
                 >Contact Us
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             {% if user.is_authenticated %}
               <li class="nav-item">
-                <a class="nav-link" href="/blog/">Blog</a>
+                <a class="nav-link" href="{% url 'blog:blog' %}">Blog</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/profile/">Profile</a>
+                <a class="nav-link" href="{% url 'main:view_profile' %}">Profile</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/accounts/logout">Logout</a>
+                <a class="nav-link" href="{% url 'main:logout' %}">Logout</a>
               </li>
             {% else %}
               <li class="nav-item">
-                  <a class="nav-link" href="/register">Register</a>
+                  <a class="nav-link" href="{% url 'main:register' %}">Register</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/accounts/login">Login</a>
+                  <a class="nav-link" href="{% url 'main:login_request' %}">Login</a>
                 </li>
             {% endif %}
           </ul>
