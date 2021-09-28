@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
@@ -41,11 +42,22 @@ def login_request(request):
                 password = form.cleaned_data.get('password')
                 user = authenticate(username=username, password=password)
                 login(request, user)
+                messages.success(request, f'{username} logged in successfully.')
                 return redirect("main:index")
+
+            elif User.objects.filter(username=form.cleaned_data.get('username')).exists():
+                user = User.objects.filter(username=form.cleaned_data.get('username')).values()
+                if(user[0]['is_active'] == False):
+                    messages.info(request, "Contact the administrator to activate your account!")
+                    return redirect("main:login_request")
+
+                else:
+                    messages.error(request, "Invalid username and/or password!")
+                return redirect("main:login_request")
 
             else:
                 messages.error(request, "Invalid username and/or password!")
-                return redirect("main:index")
+                return redirect("main:login_request")
 
         else:
             form = AuthenticationForm()
